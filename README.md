@@ -17,7 +17,7 @@ This project is a clone of the popular vacation rental platform, AirBnB, built u
 - MySQL
 
 ## Getting Started
-1. Clone the repository: `git clone https://github.com/<your_username>/airbnb-clone.git`
+1. Clone the repository: `git clone https://github.com/<your_username>/AirBnB_clone.git`
 2. Install the required packages: `pip install -r requirements.txt`
 3. Set the environment variable: `export FLASK_APP=run.py`
 4. Run the migrations: `flask db upgrade`
