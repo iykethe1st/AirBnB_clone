@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# Author: Chisom Ibekwe
 """This module contains the BaseModel class that defines all common
 attributes/methods for other classes."""
 
@@ -43,7 +42,7 @@ class BaseModel(cmd.Cmd):
         """
         Returns a dicitionary containing all keys/values of __dict__  of the instance.
         """
-        json = self.__dict__
+        json = self.__dict__.copy()
         json['__class__'] = self.__class__.__name__
         json['created_at'] = json['created_at'].isoformat()
         json['updated_at'] = json['updated_at'].isoformat()
