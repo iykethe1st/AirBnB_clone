@@ -5,6 +5,13 @@ import re
 from shlex import split
 from models import storage
 from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.place import Place
+from models.amenity import Amenity
+from models.review import Review
+
 
 def parse(arg):
     curly_braces = re.search(r"\{(.*?)\}", arg)
@@ -25,15 +32,20 @@ def parse(arg):
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the HBnB command interpreter.
+    """Defines the HolbertonBnB command interpreter.
     Attributes:
         prompt (str): The command prompt.
     """
 
     prompt = "(hbnb) "
     __classes = {
-        "BaseModel", "User", "Review", "Place", "Amenity", "City",
+        "BaseModel",
+        "User",
         "State",
+        "City",
+        "Place",
+        "Amenity",
+        "Review"
     }
 
     def emptyline(self):
@@ -46,6 +58,7 @@ class HBNBCommand(cmd.Cmd):
             "all": self.do_all,
             "show": self.do_show,
             "destroy": self.do_destroy,
+            "count": self.do_count,
             "update": self.do_update
         }
         match = re.search(r"\.", arg)
@@ -116,7 +129,6 @@ class HBNBCommand(cmd.Cmd):
             del objdict["{}.{}".format(argl[0], argl[1])]
             storage.save()
 
-
     def do_all(self, arg):
         """Usage: all or all <class> or <class>.all()
         Display string representations of all instances of a given class.
@@ -133,6 +145,15 @@ class HBNBCommand(cmd.Cmd):
                     objl.append(obj.__str__())
             print(objl)
 
+    def do_count(self, arg):
+        """Usage: count <class> or <class>.count()
+        Retrieve the number of instances of a given class."""
+        argl = parse(arg)
+        count = 0
+        for obj in storage.all().values():
+            if argl[0] == obj.__class__.__name__:
+                count += 1
+        print(count)
 
     def do_update(self, arg):
         """Usage: update <class> <id> <attribute_name> <attribute_value> or
