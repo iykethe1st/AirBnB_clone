@@ -1,21 +1,18 @@
 #!/usr/bin/python3
-"""This module contains the BaseModel class that defines all common
-attributes/methods for other classes."""
-
+"""Defines the BaseModel class."""
 import models
-import cmd
 from uuid import uuid4
 from datetime import datetime
 
 
-class BaseModel(cmd.Cmd):
-    """BaseModel <class> - defines the common attributs/methods for othr classes."""
+class BaseModel:
+    """Represents the BaseModel of the HBnB project."""
 
     def __init__(self, *args, **kwargs):
-        """
-        Initializes a new BaseModel instane.
-        Assigns a unique id to it, time created,
-        and time updated (updates each time the object is changed).
+        """Initialize a new BaseModel.
+        Args:
+            *args (any): Unused.
+            **kwargs (dict): Key/value pairs of attributes.
         """
         tform = "%Y-%m-%dT%H:%M:%S.%f"
         self.id = str(uuid4())
@@ -30,20 +27,23 @@ class BaseModel(cmd.Cmd):
         else:
             models.storage.new(self)
 
-    def __str__(self):
-        return '[{}] ({}) {}'.format(self.__class__.__name__, self.id, self.__dict__)
-
     def save(self):
-        """updates the instance attribute - updated_at with the current datetime."""
+        """Update updated_at with the current datetime."""
         self.updated_at = datetime.today()
         models.storage.save()
 
     def to_dict(self):
+        """Return the dictionary of the BaseModel instance.
+        Includes the key/value pair __class__ representing
+        the class name of the object.
         """
-        Returns a dicitionary containing all keys/values of __dict__  of the instance.
-        """
-        json = self.__dict__.copy()
-        json['__class__'] = self.__class__.__name__
-        json['created_at'] = json['created_at'].isoformat()
-        json['updated_at'] = json['updated_at'].isoformat()
-        return json
+        rdict = self.__dict__.copy()
+        rdict["created_at"] = self.created_at.isoformat()
+        rdict["updated_at"] = self.updated_at.isoformat()
+        rdict["__class__"] = self.__class__.__name__
+        return rdict
+
+    def __str__(self):
+        """Return the print/str representation of the BaseModel instance."""
+        clname = self.__class__.__name__
+        return "[{}] ({}) {}".format(clname, self.id, self.__dict__)
