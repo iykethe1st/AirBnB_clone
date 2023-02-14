@@ -26,4 +26,3 @@ class Testplace(unittest.TestCase):
         """
         place1 = Place()
         self.assertTrue(issubclass(place1.__class__, BaseModel))
-
